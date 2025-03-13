@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DK City - Data Entry</title>
+    <script>
+        async function submitForm(event) {
+            event.preventDefault();
+
+            let name = document.getElementById("name").value;
+            let email = document.getElementById("email").value;
+
+            if (name === "" || email === "") {
+                alert("সবগুলা ঘর পূরণ কর!");
+                return;
+            }
+
+            // 🔥 এখানে সঠিক Google Apps Script API URL বসানো হইছে
+            let response = await fetch("https://script.google.com/macros/s/AKfycbz7xZ_rbKqVP2ohTyIuNFe_Jy5DxEZjXAEBIZvJ93DT7e1V2BcB8FPv9-sDKl7j1aF1/exec", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name, email })
+            });
+
+            let result = await response.json();
+            if (result.status === "success") {
+                alert("ডাটা সেভ হইসে! ✅");
+                document.getElementById("name").value = "";
+                document.getElementById("email").value = "";
+            } else {
+                alert("কিছু সমস্যা হইছে! ❌");
+            }
+        }
+    </script>
+</head>
+<body>
+    <h2>DK City - Name & Email Submit</h2>
+    <form onsubmit="submitForm(event)">
+        <label for="name">নাম:</label>
+        <input type="text" id="name" name="name" required><br><br>
+        <label for="email">ইমেইল:</label>
+        <input type="email" id="email" name="email" required><br><br>
+        <button type="submit">সাবমিট কর</button>
+    </form>
+</body>
+</html>
